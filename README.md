@@ -9,6 +9,11 @@ This code base is using the [Julia Language](https://julialang.org/) and
 to make a reproducible scientific project named
 > Doran_etal_2023
 
+This project reproduces results from:
+
+[An evolution-based framework for describing human gut bacteria
+](https://www.biorxiv.org/content/10.1101/2023.12.04.569969v1)
+
 To (locally) reproduce this project, do the following:
 
 0. Download this code base.
