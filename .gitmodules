@@ -1,3 +1,4 @@
-[submodule "src/SpectralInference"]
-	path = src/SpectralInference
+[submodule "src/SpectralInference.jl"]
+	path = src/SpectralInference.jl
 	url = git@github.com:aramanlab/SpectralInference.jl.git
+	branch = doran_etal_2023_rc0
