@@ -1,0 +1,3 @@
+[submodule "src/SpectralInference"]
+	path = src/SpectralInference
+	url = git@github.com:aramanlab/SpectralInference.jl.git

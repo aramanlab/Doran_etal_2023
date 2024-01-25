@@ -9,6 +9,18 @@ To (locally) reproduce this project, do the following:
 
 0. Download this code base. Notice that raw data are typically not included in the
    git-history and may need to be downloaded independently.
+
+   clone repo:
+   ```
+   git clone --recurse-submodules git@github.com:aramanlab/Doran_etal_2023.git
+   ```
+
+   download data:
+   ```
+   curl src dst
+   tar xzf src dst
+   ```
+
 1. Open a Julia console and do:
    ```
    julia> using Pkg

@@ -1,0 +1,38 @@
+project:
+  type: website
+  output-dir: ../docs
+
+
+website:
+  title: Doran et al 2023
+  # favicon: _data/images/distortions.png
+  reader-mode: true
+  sidebar:
+    title: An evolution-based framework for describing human gut bacteria
+    # logo: _data/images/distortions.png
+    # align: center
+    # pinned: true
+    style: "docked"
+    contents:
+      - href: index.qmd
+        text: Home
+      - 00_setup_data.ipynb
+      - 01_figure_01.ipynb
+      - 02_figure_02supp.ipynb
+      - 02_figure_02main.ipynb
+      - 03_figure_03.ipynb
+      - 04_figure_04.ipynb
+      - 05_figure_05.ipynb
+      - 06_figure_06.ipynb
+      # - test.ipynb
+
+format:
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+
+
+
