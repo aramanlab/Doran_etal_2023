@@ -21,6 +21,7 @@ To (locally) reproduce this project, do the following:
    git clone git@github.com:aramanlab/Doran_etal_2023.git
    cd Doran_etal_2023
    git submodule init
+   git submodule update
    ```
 1. Open a Julia console and do:
    ```
