@@ -2,7 +2,7 @@
 
 julia_version = "1.10.0"
 manifest_format = "2.0"
-project_hash = "415deaa59af3e81efed97e21a0707e7c0559dbae"
+project_hash = "904f0986fa6862be25f0a1a30a2957dae87d636a"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "41c37aa88889c171f1300ceac1313c06e891d245"
@@ -2107,7 +2107,7 @@ weakdeps = ["ChainRulesCore"]
 
 [[deps.SpectralInference]]
 deps = ["CategoricalArrays", "Clustering", "Distances", "FreqTables", "LinearAlgebra", "PrecompileTools", "Printf", "Reexport", "SparseArrays", "StatsBase"]
-path = "src/SpectralInference"
+path = "src/SpectralInference.jl"
 uuid = "a959a40c-7f6b-448f-a4b7-059cce266d3c"
 version = "0.4.1"
 weakdeps = ["NewickTree"]

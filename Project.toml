@@ -44,4 +44,5 @@ UMAP = "c4f8c510-2410-5be4-91d7-4fbaeb39457e"
 
 [compat]
 DrWatson = "2.13.0"
+NeighborJoining = "0.1"
 julia = "1.10"
