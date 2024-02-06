@@ -254,10 +254,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@quickactivate</span> <span class="fu">projectdir</span>()</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load extra libraries</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Downloads</span>: download</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span>, <span class="bu">DataFrames</span>, <span class="bu">Muon</span>, <span class="bu">MAT</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">include</span>(<span class="fu">srcdir</span>(<span class="st">"helpers.jl"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span>, <span class="bu">DataFrames</span>, <span class="bu">Muon</span>, <span class="bu">MAT</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">include</span>(<span class="fu">srcdir</span>(<span class="st">"helpers.jl"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre><code>show_svg (generic function with 1 method)</code></pre>
 </div>
@@ -529,33 +528,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="read-in-biobank-data-make-unified-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="read-in-biobank-data-make-unified-dataset">Read in Biobank data &amp; make unified dataset</h2>
-<div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>metadata <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="fu">joinpath</span>(bbdir, <span class="st">"BB669_rowmeta.tsv"</span>), DataFrame; delim<span class="op">=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, normalizenames<span class="op">=</span><span class="cn">true</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>metabolite_df <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="fu">joinpath</span>(bbdir, <span class="st">"BB669_metabolites_foldchange.csv"</span>), DataFrame)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>metabolite_labels <span class="op">=</span> <span class="fu">replace</span>.(<span class="fu">names</span>(metabolite_df), <span class="st">"_rel"</span><span class="op">=&gt;</span><span class="st">""</span>)[<span class="fl">3</span><span class="op">:</span><span class="kw">end</span>]</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rename!</span>(metabolite_df, <span class="fu">names</span>(metabolite_df) <span class="op">.=&gt;</span> CSV.<span class="fu">normalizename</span>.(<span class="fu">names</span>(metabolite_df)))</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>BB669_ogg_data <span class="op">=</span> <span class="fu">matread</span>(<span class="fu">joinpath</span>(bbdir, <span class="st">"BB669_oggs.mat"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<pre><code>Dict{String, Any} with 3 entries:
-  "obs_names" =&gt; Any["MSK.16.19", "MSK.10.5", "MSK.13.23", "MSK.16.61", "MSK.18…
-  "data"      =&gt; [0 0 … 0 0; 0 0 … 0 0; … ; 0 0 … 0 0; 0 0 … 0 0]
-  "var_names" =&gt; Any["2Z9MM", "31GMM", "32EMM", "32KMM", "331MM", "337MM", "345…</code></pre>
-</div>
+<p>The BioBank (aka: Commensal Strain Bank, aka: CSB) is the strain bank we collected. It comprises 669 strains that have at least 1% distinct sequence identity to any other strain in the BioBank (i.e.&nbsp;we removed clonal duplicates).</p>
+<p>All these strains were whole genome sequenced. And from that sequencing we annotated each strain by orthologous gene groups (OGG). This annotation was done for each strain by counting the number of coding regions that matched to each orthologous gene groups in the eggNOG database (v5.0) database and filtering out gene-groups that had no matches. This created the matrix in <code>BB669_oggs.mat</code> where strains correspond to each row and OGGs correspond to each column and each entry holds the number of protein sequences that matched to that OGG.</p>
+<p>We also measured the metabolic phenotype of these strains across a number of short-chain fatty acids and other small molecules. The file <code>B669_metabolites_foldchange.csv</code> contains the measurements we use in this paper, where each row contains a strain and the columns contain metabolite compounds the strains either digest or produce. The degree of digestion or production of each metabolite is compared as the ratio between the relative concentration of the compound in media cultured with the strain versus blank media without any strain. We take the log2 transform of this ratio and report the log2-fold-change (log2FC) as our measure of metabolic activity.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>BB669_ogg_data <span class="op">=</span> <span class="fu">matread</span>(<span class="fu">joinpath</span>(bbdir, <span class="st">"BB669_oggs.mat"</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>metadata <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="fu">joinpath</span>(bbdir, <span class="st">"BB669_rowmeta.tsv"</span>), DataFrame; delim<span class="op">=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, normalizenames<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>metabolite_df <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="fu">joinpath</span>(bbdir, <span class="st">"BB669_metabolites_foldchange.csv"</span>), DataFrame)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>metabolite_labels <span class="op">=</span> <span class="fu">replace</span>.(<span class="fu">names</span>(metabolite_df), <span class="st">"_rel"</span><span class="op">=&gt;</span><span class="st">""</span>)[<span class="fl">3</span><span class="op">:</span><span class="kw">end</span>]</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rename!</span>(metabolite_df, <span class="fu">names</span>(metabolite_df) <span class="op">.=&gt;</span> CSV.<span class="fu">normalizename</span>.(<span class="fu">names</span>(metabolite_df)));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using function in helpers.jl</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>BBoggs_UPorder <span class="op">=</span> <span class="fu">match_column_order</span>(</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    BB669_ogg_data[<span class="st">"data"</span>], </span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    BB669_ogg_data[<span class="st">"var_names"</span>], </span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    uniprot.var_names</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#= </span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">    use function in helpers.jl to match measured orthologs in our strain bank </span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">    to those measured in UniProt bacteria.</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">=#</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>BBoggs_UPorder <span class="op">=</span> <span class="fu">match_column_order</span>(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    BB669_ogg_data[<span class="st">"data"</span>], </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    BB669_ogg_data[<span class="st">"var_names"</span>], </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    uniprot.var_names</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Create unified file for future analysis, this will be easier to load in later notebooks</p>
 <div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>keptspecies <span class="op">=</span> <span class="fu">string</span>.(<span class="fu">keys</span>(<span class="fu">sort</span>(<span class="fu">filter</span>(x<span class="op">-&gt;</span> <span class="fu">last</span>(x) <span class="op">&gt;=</span> <span class="fl">20</span>, <span class="fu">countmap</span>(metadata.Species)), byvalue<span class="op">=</span><span class="cn">true</span>, rev<span class="op">=</span><span class="cn">true</span>)))</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">filter!</span>(<span class="op">!=</span>(<span class="st">"unclassified"</span>), keptspecies)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>keptspecies_mask <span class="op">=</span> <span class="fu">in</span>.(metadata.Species, <span class="fu">Ref</span>(keptspecies));</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>keptspecies <span class="co"># species with at least 20 replicates in the dataset</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this finds all species with at least 20 strain replicates in the dataset</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># this subset of species are those we statistically test for strain level differences later on</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>keptspecies <span class="op">=</span> <span class="fu">string</span>.(<span class="fu">keys</span>(<span class="fu">sort</span>(<span class="fu">filter</span>(x<span class="op">-&gt;</span> <span class="fu">last</span>(x) <span class="op">&gt;=</span> <span class="fl">20</span>, <span class="fu">countmap</span>(metadata.Species)), byvalue<span class="op">=</span><span class="cn">true</span>, rev<span class="op">=</span><span class="cn">true</span>)))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">filter!</span>(<span class="op">!=</span>(<span class="st">"unclassified"</span>), keptspecies)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>keptspecies_mask <span class="op">=</span> <span class="fu">in</span>.(metadata.Species, <span class="fu">Ref</span>(keptspecies));</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>keptspecies <span class="co"># species with at least 20 replicates in the dataset</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre><code>11-element Vector{String}:
  "Phocaeicola vulgatus"
@@ -571,31 +571,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  "[Eubacterium] rectale"</code></pre>
 </div>
 </div>
+<p>Create unified file for future analysis, this will be easier to load in later notebooks</p>
 <div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>biobank_ogg <span class="op">=</span> <span class="fu">AnnData</span>(</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    X<span class="op">=</span>BB669_ogg_data[<span class="st">"data"</span>],</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    obs_names<span class="op">=</span><span class="fu">string</span>.(BB669_ogg_data[<span class="st">"obs_names"</span>]),</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    var_names<span class="op">=</span><span class="fu">string</span>.(BB669_ogg_data[<span class="st">"var_names"</span>])</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>biobank_ogg_UP <span class="op">=</span> <span class="fu">AnnData</span>(</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    X<span class="op">=</span>BBoggs_UPorder,</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    obs_names<span class="op">=</span><span class="fu">string</span>.(BB669_ogg_data[<span class="st">"obs_names"</span>]),</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    var_names<span class="op">=</span>uniprot.var_names</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>biobank_met <span class="op">=</span> <span class="fu">AnnData</span>(</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    X<span class="op">=</span><span class="fu">log2</span>.(<span class="fu">Matrix</span>(<span class="fu">coalesce</span>.(metabolite_df[<span class="op">:</span>, <span class="fl">3</span><span class="op">:</span><span class="kw">end</span>], <span class="cn">NaN</span>))),</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    obs_names<span class="op">=</span>metabolite_df[<span class="op">:</span>, <span class="op">:</span>ID],</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    var_names<span class="op">=</span><span class="fu">names</span>(metabolite_df)[<span class="fl">3</span><span class="op">:</span><span class="kw">end</span>],</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    var<span class="op">=</span><span class="fu">DataFrame</span>(ID<span class="op">=</span><span class="fu">names</span>(metabolite_df)[<span class="fl">3</span><span class="op">:</span><span class="kw">end</span>], label<span class="op">=</span>metabolite_labels)</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>biobank_met.layers[<span class="st">"raw"</span>] <span class="op">=</span> <span class="fu">Matrix</span>(<span class="fu">coalesce</span>.(metabolite_df[<span class="op">:</span>, <span class="fl">3</span><span class="op">:</span><span class="kw">end</span>], <span class="cn">NaN</span>))</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>biobank <span class="op">=</span> <span class="fu">MuData</span>(mod<span class="op">=</span><span class="fu">Dict</span>(</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"oggs"</span> <span class="op">=&gt;</span> biobank_ogg,</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"UPorder_oggs"</span> <span class="op">=&gt;</span> biobank_ogg_UP,</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"metabolites_foldchange"</span> <span class="op">=&gt;</span> biobank_met,</span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>biobank.obs <span class="op">=</span> <span class="fu">insertcols</span>(<span class="fu">String</span>.(metadata), <span class="op">:</span>kept_species<span class="op">=&gt;</span>keptspecies_mask)</span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>biobank</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>biobank_ogg <span class="op">=</span> <span class="fu">AnnData</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    X<span class="op">=</span>BB669_ogg_data[<span class="st">"data"</span>],</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    obs_names<span class="op">=</span><span class="fu">string</span>.(BB669_ogg_data[<span class="st">"obs_names"</span>]),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    var_names<span class="op">=</span><span class="fu">string</span>.(BB669_ogg_data[<span class="st">"var_names"</span>])</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>biobank_ogg_UP <span class="op">=</span> <span class="fu">AnnData</span>(</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    X<span class="op">=</span>BBoggs_UPorder,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    obs_names<span class="op">=</span><span class="fu">string</span>.(BB669_ogg_data[<span class="st">"obs_names"</span>]),</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    var_names<span class="op">=</span>uniprot.var_names</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>biobank_met <span class="op">=</span> <span class="fu">AnnData</span>(</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    X<span class="op">=</span><span class="fu">log2</span>.(<span class="fu">Matrix</span>(<span class="fu">coalesce</span>.(metabolite_df[<span class="op">:</span>, <span class="fl">3</span><span class="op">:</span><span class="kw">end</span>], <span class="cn">NaN</span>))),</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    obs_names<span class="op">=</span>metabolite_df[<span class="op">:</span>, <span class="op">:</span>ID],</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    var_names<span class="op">=</span><span class="fu">names</span>(metabolite_df)[<span class="fl">3</span><span class="op">:</span><span class="kw">end</span>],</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    var<span class="op">=</span><span class="fu">DataFrame</span>(ID<span class="op">=</span><span class="fu">names</span>(metabolite_df)[<span class="fl">3</span><span class="op">:</span><span class="kw">end</span>], label<span class="op">=</span>metabolite_labels)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>biobank_met.layers[<span class="st">"raw"</span>] <span class="op">=</span> <span class="fu">Matrix</span>(<span class="fu">coalesce</span>.(metabolite_df[<span class="op">:</span>, <span class="fl">3</span><span class="op">:</span><span class="kw">end</span>], <span class="cn">NaN</span>))</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>biobank <span class="op">=</span> <span class="fu">MuData</span>(mod<span class="op">=</span><span class="fu">Dict</span>(</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"oggs"</span> <span class="op">=&gt;</span> biobank_ogg,</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"UPorder_oggs"</span> <span class="op">=&gt;</span> biobank_ogg_UP,</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"metabolites_foldchange"</span> <span class="op">=&gt;</span> biobank_met,</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>biobank.obs <span class="op">=</span> <span class="fu">insertcols</span>(<span class="fu">String</span>.(metadata), <span class="op">:</span>kept_species<span class="op">=&gt;</span>keptspecies_mask)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>biobank</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>┌ Warning: Cannot join columns with the same name because var_names are intersecting.
 └ @ Muon /Users/bend/.julia/packages/Muon/eLqpV/src/mudata.jl:351</code></pre>
@@ -611,7 +612,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeh5mu</span>(<span class="fu">joinpath</span>(bbdir, <span class="st">"BB669.h5mu"</span>), biobank)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeh5mu</span>(<span class="fu">joinpath</span>(bbdir, <span class="st">"BB669.h5mu"</span>), biobank)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

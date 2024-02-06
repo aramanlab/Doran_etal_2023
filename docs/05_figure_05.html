@@ -211,7 +211,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#training-a-lasso-model" id="toc-training-a-lasso-model" class="nav-link active" data-scroll-target="#training-a-lasso-model">Training a LASSO model</a></li>
+  <li><a href="#setup-data-and-model" id="toc-setup-data-and-model" class="nav-link active" data-scroll-target="#setup-data-and-model">Setup data and model</a>
+  <ul class="collapse">
+  <li><a href="#training-a-lasso-model" id="toc-training-a-lasso-model" class="nav-link" data-scroll-target="#training-a-lasso-model">Training a LASSO model</a></li>
   <li><a href="#training-a-lasso-model-on-3-10-pcs-for-comparison" id="toc-training-a-lasso-model-on-3-10-pcs-for-comparison" class="nav-link" data-scroll-target="#training-a-lasso-model-on-3-10-pcs-for-comparison">Training a LASSO model on 3 &amp; 10 PCs for comparison</a></li>
   <li><a href="#comparison-of-models" id="toc-comparison-of-models" class="nav-link" data-scroll-target="#comparison-of-models">Comparison of models</a>
   <ul class="collapse">
@@ -220,6 +222,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#plot-tree-and-metabolites" id="toc-plot-tree-and-metabolites" class="nav-link" data-scroll-target="#plot-tree-and-metabolites">Plot tree and metabolites</a></li>
   <li><a href="#plot-example-fold-tree" id="toc-plot-example-fold-tree" class="nav-link" data-scroll-target="#plot-example-fold-tree">Plot example fold tree</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -286,6 +289,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>species_color_dict <span class="op">=</span> <span class="fu">Dict</span>(k<span class="op">=&gt;</span>v <span class="cf">for</span> (k,v) <span class="kw">in</span> <span class="fu">zip</span>(speciescolordf.species_name, speciescolordf.color));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<section id="setup-data-and-model" class="level1">
+<h1>Setup data and model</h1>
 <div class="cell" data-execution_count="52">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@load</span> LassoRegressor pkg<span class="op">=</span>MLJLinearModels verbosity<span class="op">=</span><span class="fl">0</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@load</span> OneHotEncoder pkg<span class="op">=</span>MLJModels verbosity<span class="op">=</span><span class="fl">0</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -6192,6 +6197,7 @@ QmCC
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

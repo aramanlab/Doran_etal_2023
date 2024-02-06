@@ -223,12 +223,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="initalizing-project" class="level2">
 <h2 class="anchored" data-anchor-id="initalizing-project">Initalizing project</h2>
 <p>This code base is using the <a href="https://julialang.org/">Julia Language</a> and <a href="https://juliadynamics.github.io/DrWatson.jl/stable/">DrWatson</a> to make a reproducible scientific project named &gt; Doran_etal_2023</p>
+<p>This project reproduces results from:</p>
+<p><a href="https://www.biorxiv.org/content/10.1101/2023.12.04.569969v1">An evolution-based framework for describing human gut bacteria</a></p>
 <p>To (locally) reproduce this project, do the following:</p>
 <ol start="0" type="1">
 <li><p>Download this code base.</p>
-<pre><code>git clone git@github.com:aramanlab/Doran_etal_2023.git
-cd Doran_etal_2023
-git submodule init</code></pre></li>
+<pre><code>git clone --recurse-submodules git@github.com:aramanlab/Doran_etal_2023.git
+cd Doran_etal_2023</code></pre></li>
 <li><p>Open a Julia console and do:</p>
 <pre><code>julia&gt; using Pkg
 julia&gt; Pkg.add("DrWatson") # install globally, for using `quickactivate`
