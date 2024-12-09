@@ -1,0 +1,5 @@
+channels = ["conda-forge", "bioconda"]
+
+[deps]
+r-irkernel = ""
+r-essentials = ""

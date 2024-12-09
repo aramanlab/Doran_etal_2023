@@ -1,0 +1,20 @@
+msk_id,name,seq_id,need_oggs
+DFI.1.234,[Clostridium] scindens,211117-DFI.1.234,true
+DFI.2.45,Bifidobacterium longum,210702-DFI.2.45,true
+DFI.3.84,Coprococcus comes,210702-DFI.3.84,false
+DFI.6.78,Anaerobutyricum soehngenii,211108-DFI.6.78,true
+DFI.4.30,Anaerostipes hadrus,210702-DFI.4.30,false
+DFI.1.19,Anaerostipes caccae,210509-DFI.1.19,false
+DFI.5.28,[Eubacterium] rectale,210928-DFI.5.28,true
+MSK.6.3,Roseburia faecis,TM222,false
+DFI.5.40,Faecalibacterium prausnitzii,210226-DFI.5.40,true
+MSK.11.20,Anaerostipes hadrus,TM456,false
+DFI.5.64,[Clostridium] symbiosum,210702-DFI.5.64,false
+MSK.14.17,Anaerostipes hadrus,TM376,false
+DFI.5.75,nothing,nothing,true
+MSK.16.22,[Eubacterium] rectale,MSK16_22,false
+MSK.17.84,Roseburia intestinalis,MSK17_84,false
+DFI.5.67,[Clostridium] innocuum,210702-DFI.5.67,true
+SL.2.19,Flavonifractor plautii,220104-SL.2.19,true
+DFI.5.16,Coprococcus eutactus,210702-DFI.5.16,true
+DFI.7.37,nothing,nothing,true
