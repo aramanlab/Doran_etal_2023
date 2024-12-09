@@ -24,8 +24,8 @@ function julia_main()::Cint
     global_logger(logger)
     time = TimerOutput()
     @timeit time "total" begin
-    
-    mkpath(args.outputdir) != nothing || 
+
+    mkpath(args.outputdir) != nothing ||
         ErrorException("Could not create outputdir: $(args.outputdir)")
     name = first(split(basename(args.inputfile), "."))
     modelparam = if args.model == :JC69
@@ -35,7 +35,7 @@ function julia_main()::Cint
     end
 
     cp(args.inputfile, joinpath(args.outputdir, basename(args.inputfile)), force=true)
-    
+
     @info "Starting PhyML on $name"
     # protein WAG, general JTT
     @timeit time "PhyML" begin
@@ -52,12 +52,12 @@ function julia_main()::Cint
             --bootstrap -4`, # SH like branch supports
         stdout=joinpath(args.outputdir, name * "_phyml.out")))
     end # timeit phyml
-    
+
     cp(joinpath(args.outputdir, basename(args.inputfile) * "_phyml_tree.txt"),
        joinpath(args.outputdir, basename(args.inputfile) * "-supporttree.txt"),
        force=true
     )
-    
+
     end # timeit total
     @info "stopping run"
     @info "timing" show(time) println("")

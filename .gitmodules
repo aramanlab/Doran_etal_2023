@@ -2,3 +2,7 @@
 	path = src/SpectralInference.jl
 	url = git@github.com:aramanlab/SpectralInference.jl.git
 	branch = doran_etal_2023_rc0
+[submodule "src/TreePlots.jl"]
+	path = src/TreePlots.jl
+	url = git@github.com:BenjaminDoran/TreePlots.jl.git
+	branch = doran_etal_2023_rc0

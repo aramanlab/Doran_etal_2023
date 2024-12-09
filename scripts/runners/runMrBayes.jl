@@ -14,7 +14,7 @@ using Logging
     @argumentdefault Int 0 loglevel "-l" "--loglevel"
     @argumentdefault Int 100 nboot "-b" "--nboot"
     @argtest nboot n->0≤n "nboot must be positive"
-    @argumentdefault Int 5 nproc "-p" "--nproc" 
+    @argumentdefault Int 5 nproc "-p" "--nproc"
 end
 
 function julia_main()::Cint
@@ -24,24 +24,24 @@ function julia_main()::Cint
     global_logger(logger)
     time = TimerOutput()
     @timeit time "total" begin
-    
-    mkpath(args.outputdir) != nothing || 
+
+    mkpath(args.outputdir) != nothing ||
         ErrorException("Could not create outputdir: $(args.outputdir)")
     name = first(split(basename(args.inputfile), "."))
-    
+
     modelparam = if args.model == :JC69
         "Revmatpr=dirichlet(1,1,1,1,1,1) statefreqpr=fixed(empirical)"
     elseif args.model == :WAG
         "Aamodelpr=fixed(wag) statefreqpr=fixed(empirical)"
     end
-    
+
     mrbayesinputfile = joinpath(args.outputdir, name * ".nex")
     @info "Converting input to nexus format"
     @timeit time "convert input to nexus" begin
         run(pipeline(`$(goalign()) reformat nexus --auto-detect -i $(args.inputfile)`,
         stdout=mrbayesinputfile))
     end
-    
+
     @info "changing dir to: $(args.outputdir)"
     rundir = pwd()
     cd(args.outputdir)

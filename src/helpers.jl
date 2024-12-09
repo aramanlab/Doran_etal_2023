@@ -6,7 +6,7 @@ function match_column_order(mtx::AbstractMatrix, cnames_src, cnames_dst)
     rawidxs = indexin(cnames_src, cnames_dst)
     mask = .!isnothing.(rawidxs)
     matchedcols = filter(x->.!isnothing.(x), rawidxs)
-    
+
     # set values where we have matched columns
     dstmtx[:, matchedcols] .= mtx[:, mask]
     return dstmtx
@@ -42,7 +42,7 @@ function writephylip(filename, M::AbstractVector{<:AbstractString}, ids)
 end
 
 
-function show_svg(path) 
+function show_svg(path)
     open(path) do io
         s = read(io, String)
         display(MIME("image/svg+xml"), s)
@@ -50,7 +50,7 @@ function show_svg(path)
 end
 
 getlims(x) = extrema(x) |> x->abs.(x) |> maximum |> x->(-x, x)
-function getlims(x, y) 
+function getlims(x, y)
     lims = extrema(vcat(x, y))
     lims =  lims .+ (-(lims[2] - lims[1]) * 0.1, (lims[2] - lims[1]) * 0.1)
 end

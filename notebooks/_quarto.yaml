@@ -8,23 +8,22 @@ website:
   # favicon: _data/images/distortions.png
   reader-mode: true
   sidebar:
-    title: An evolution-based framework for describing human gut bacteria
-    # logo: _data/images/distortions.png
-    # align: center
-    # pinned: true
+    title: Subspecies phylogeny in the human gut revealed by coevolutionary constraints across the bacterial kingdom
     style: "docked"
     contents:
-      - href: index.qmd
+      - href: 00_index.qmd
         text: Home
       - 00_setup_data.ipynb
       - 01_figure_01.ipynb
-      - 02_figure_02supp.ipynb
-      - 02_figure_02main.ipynb
+      - 02_figure_02.ipynb
       - 03_figure_03.ipynb
       - 04_figure_04.ipynb
       - 05_figure_05.ipynb
       - 06_figure_06.ipynb
-      # - test.ipynb
+      - 07_figure_07.ipynb
+      - 08_figure_08.ipynb
+      - 09_figure_s20.ipynb
+      - 10_figure_s21.ipynb
 
 format:
   html:
@@ -33,6 +32,3 @@ format:
       dark: darkly
     css: styles.css
     toc: true
-
-
-

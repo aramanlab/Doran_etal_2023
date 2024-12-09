@@ -1,6 +1,6 @@
 using DrWatson
 @quickactivate "Doran_etal_2023"
-using SpectralInference, SparseArrays 
+using SpectralInference, SparseArrays
 using ArgMacros, Logging, TimerOutputs
 using StatsBase: sample
 using Gotree_jll
@@ -29,11 +29,11 @@ function julia_main()::Cint
     @info "Starting SPI inference"
     @info "Setting up workspace"
     # setup output dir
-    mkpath(args.outputdir) != nothing || 
+    mkpath(args.outputdir) != nothing ||
         ErrorException("Could not create outputdir: $(args.outputdir)")
     name = first(split(basename(args.inputfile), "."))
 
-    @info "Running SPI" 
+    @info "Running SPI"
     @timeit time "running SPI" begin
         phydf = readphylip(args.inputfile)
         nfeats = length(phydf.seqs[1])
@@ -45,7 +45,7 @@ function julia_main()::Cint
         hc = UPGMA_tree(dij)
         spitree = SpectralInference.newickstring(hc, phydf.smps)
     end #time
-    
+
     @info "Writing out SPI Tree"
     open(joinpath(args.outputdir, name * "-tree.nw"), "w") do io
         println(io, spitree)
@@ -83,7 +83,7 @@ function julia_main()::Cint
             -b $(joinpath(args.outputdir, name * "-boottrees.nw")) \
             -o $(joinpath(args.outputdir, name * "-supporttree.nw"))`,
             stderr=joinpath(args.outputdir, "booster.log")))
-    end 
+    end
     end # function timeit
     @info "Finishing run"
     @info "\ntiming" show(time) println("")

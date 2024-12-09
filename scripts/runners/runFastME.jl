@@ -23,8 +23,8 @@ function julia_main()::Cint
     global_logger(logger)
     time = TimerOutput()
     @timeit time "total" begin
-    
-    mkpath(args.outputdir) != nothing || 
+
+    mkpath(args.outputdir) != nothing ||
         ErrorException("Could not create outputdir: $(args.outputdir)")
     name = first(split(basename(args.inputfile), "."))
     modelparam = if args.model == :JC69
@@ -32,7 +32,7 @@ function julia_main()::Cint
     elseif args.model == :WAG
         "-pWAG"
     end
-    
+
     @info "Starting FastME on $name"
     # protein WAG, general JTT
     @timeit time "FastME" begin
@@ -52,7 +52,7 @@ function julia_main()::Cint
     end
 
     @info "using Booster to compute support values"
-    @timeit time "booster" begin 
+    @timeit time "booster" begin
         ## calculate support
         run(pipeline(`$(gotree()) compute support tbe --silent \
             -i $(joinpath(args.outputdir, name * "-tree.nw")) \

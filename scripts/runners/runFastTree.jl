@@ -23,8 +23,8 @@ function julia_main()::Cint
     global_logger(logger)
     time = TimerOutput()
     @timeit time "total" begin
-    
-    mkpath(args.outputdir) != nothing || 
+
+    mkpath(args.outputdir) != nothing ||
         ErrorException("Could not create outputdir: $(args.outputdir)")
     name = first(split(basename(args.inputfile), "."))
     modelparam = if args.model == :JC69
@@ -32,7 +32,7 @@ function julia_main()::Cint
     elseif args.model == :WAG
         "-wag"
     end
-    
+
     @info "Converting to fasta format"
     @timeit time "fasta conversion" begin
         run(pipeline(`$(goalign()) reformat fasta --auto-detect -i $(args.inputfile)`,
@@ -61,7 +61,7 @@ function julia_main()::Cint
         stderr=joinpath(args.outputdir, name * "_fasttree.out"),
         stdout=joinpath(args.outputdir, name * "-tree.nw")))
     end
-    
+
     @info "Starting FastTree on bootstraps of $name"
     # protein WAG, general JTT
     @timeit time "fasttree bootstrap" begin

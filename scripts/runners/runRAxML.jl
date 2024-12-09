@@ -24,8 +24,8 @@ function julia_main()::Cint
     global_logger(logger)
     time = TimerOutput()
     @timeit time "total" begin
-    
-    mkpath(args.outputdir) != nothing || 
+
+    mkpath(args.outputdir) != nothing ||
         ErrorException("Could not create outputdir: $(args.outputdir)")
     name = first(split(basename(args.inputfile), "."))
     modelparam = if args.model == :JC69
@@ -39,7 +39,7 @@ function julia_main()::Cint
     @info "changing dir to: $(args.outputdir)"
     rundir = pwd()
     cd(args.outputdir)
-    
+
     @timeit time "raxml" begin
         run(pipeline(`$(raxmlHPC_PTHREADS_AVX()) \
             -f a \
@@ -54,7 +54,7 @@ function julia_main()::Cint
         ))
     end
     cp("RAxML_bipartitions.T01", "RAxML-supporttree.nw")
-    
+
     # move back to run dir
     cd(rundir)
     @info "changing dir to: $(rundir)"

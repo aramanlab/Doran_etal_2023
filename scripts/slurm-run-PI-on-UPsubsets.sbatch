@@ -13,7 +13,7 @@ ulimit -u 10000
 
 projdir="/home/bend/scratchspace/projects/Doran_etal_2022/"
 indir="$projdir/data/exp_pro/UPsubsetMSAs"
-arg_list=$(ls $indir) 
+arg_list=$(ls $indir)
 outdir="$projdir/_research/UPsubsetMSAs"
 runnerscripts=('runSPI', 'runFastTree', 'runFastME', 'runPhyML', 'runRAxML', 'runMrBayes')
 mkdir -p $outdir
