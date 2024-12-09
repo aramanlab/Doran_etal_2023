@@ -11,7 +11,7 @@ website:
     title: Subspecies phylogeny in the human gut revealed by coevolutionary constraints across the bacterial kingdom
     style: "docked"
     contents:
-      - href: 00_index.qmd
+      - href: index.qmd
         text: Home
       - 00_setup_data.ipynb
       - 01_figure_01.ipynb
