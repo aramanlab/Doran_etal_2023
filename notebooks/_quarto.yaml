@@ -14,16 +14,16 @@ website:
       - href: index.qmd
         text: Home
       - 00_setup_data.ipynb
-      - 01_figure_01.ipynb
-      - 02_figure_02.ipynb
-      - 03_figure_03.ipynb
-      - 04_figure_04.ipynb
-      - 05_figure_05.ipynb
-      - 06_figure_06.ipynb
-      - 07_figure_07.ipynb
-      - 08_figure_08.ipynb
-      - 09_figure_s20.ipynb
-      - 10_figure_s21.ipynb
+      - 01_figure_s01.ipynb
+      - 02_figure_01.ipynb
+      - 03_figure_02.ipynb
+      - 04_figure_03.ipynb
+      - 05_figure_04.ipynb
+      - 06_figure_05.ipynb
+      - 07_figure_06.ipynb
+      - 08_figure_07.ipynb
+      - 09_figure_s21.ipynb
+      - 10_figure_s22.ipynb
 
 format:
   html:
