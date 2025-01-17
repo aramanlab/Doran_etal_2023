@@ -12,10 +12,7 @@ to make a reproducible scientific project named
 
 This project reproduces results from:
 
-published version: [Subspecies phylogeny in the human gut revealed by coevolutionary constraints across the bacterial kingdom]
-
-preprint: [An evolution-based framework for describing human gut bacteria
-](https://www.biorxiv.org/content/10.1101/2023.12.04.569969v1)
+[Subspecies phylogeny in the human gut revealed by coevolutionary constraints across the bacterial kingdom](https://doi.org/10.1016/j.cels.2024.12.008)
 
 To (locally) reproduce this project, do the following:
 
